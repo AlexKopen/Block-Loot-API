@@ -25,10 +25,6 @@ public class PriceController {
     // Get All Prices
     @GetMapping("/time-range")
     public List<Price> custom(@RequestParam("symbol") String symbol, @RequestParam("start-date") String startDate, @RequestParam("end-date") String endDate) {
-        symbol = symbol.isEmpty() ? "btc" : symbol;
-        startDate = startDate.isEmpty() ? "2000-01-01" : startDate;
-        endDate = endDate.isEmpty() ? "2100-01-01" : endDate;
-
         return priceRepository.getBySmbolAndDateRange(symbol, startDate, endDate);
     }
 }
