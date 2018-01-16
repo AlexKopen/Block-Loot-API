@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface PriceRepositoryCustom {
-    List<Price> getBySmbolAndDateRange(String symbol, String startDate, String endDate);
+    List<Price> getBySmbolAndDateRange(List<String> symbols, String startDate, String endDate);
 }

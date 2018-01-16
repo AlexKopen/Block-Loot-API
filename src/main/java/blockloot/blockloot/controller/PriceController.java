@@ -1,30 +1,33 @@
 package blockloot.blockloot.controller;
 
 import blockloot.blockloot.model.Price;
+import blockloot.blockloot.model.PriceHistoryRequest;
 import blockloot.blockloot.repository.PriceRepository;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class PriceController {
     @Autowired
     private PriceRepository priceRepository;
 
-    // Get All Prices
     @GetMapping("/prices")
     public List<Price> getAllPrices() {
-        return priceRepository.findAll();
+        return this.priceRepository.findAll();
     }
 
-    // Get All Prices
     @GetMapping("/time-range")
-    public List<Price> custom(@RequestParam("symbol") String symbol, @RequestParam("start-date") String startDate, @RequestParam("end-date") String endDate) {
-        return priceRepository.getBySmbolAndDateRange(symbol, startDate, endDate);
+    public List<Price> custom(@RequestBody String body) {
+        Gson g = new Gson();
+        PriceHistoryRequest priceHistoryRequest = g.fromJson(body, PriceHistoryRequest.class);
+
+        return this.priceRepository.getBySmbolAndDateRange(Arrays.asList(priceHistoryRequest.symbols), priceHistoryRequest.startDate,
+                priceHistoryRequest.endDate);
     }
 }
